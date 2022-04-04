@@ -1,7 +1,7 @@
-local watcher = require("watcher-lua")
-local isWin = watcher.isWindows()
+local zen = require("zen-lua")
+local isWin = zen.isWindows()
 
-if (isWin and not watcher.windowsMatches()) then
+if (isWin and not zen.windowsMatches()) then
 	local function checkZipper()
 		if not os.execute("unzip") then
 			if os.execute("7z") then
@@ -16,17 +16,17 @@ if (isWin and not watcher.windowsMatches()) then
 	end
 
 	local zipper = checkZipper()
-	watcher.clearConsole()
+	zen.clearConsole()
 	if not zipper then return end
 
 	local function unzip()
 		local cmd
 
 		if zipper == "unzip" then
-			local path = watcher.capture("echo %CD%") .. "temp/nssm/nssm.zip/nssm-2.24/win" .. watcher.architecture() .. "/nssm.exe"
+			local path = zen.capture("echo %CD%") .. "temp/nssm/nssm.zip/nssm-2.24/win" .. zen.architecture() .. "/nssm.exe"
 			cmd = string.format("unzip -j temp/nssm.zip %s -d C:\\Windows\\System32", path)
 		elseif zipper == "7z" then
-			local path = "nssm-2.24/win" .. watcher.architecture() .. "/nssm.exe"
+			local path = "nssm-2.24/win" .. zen.architecture() .. "/nssm.exe"
 			cmd = string.format("7z e temp/nssm.zip -oC:\\Windows\\System32 %s", path)
 		end
 
@@ -38,7 +38,7 @@ if (isWin and not watcher.windowsMatches()) then
 
 	local option = io.read()
 	if option == "y" then
-		watcher.clearConsole()
+		zen.clearConsole()
 
 		os.execute("mkdir temp 2> NUL")
 
@@ -48,9 +48,9 @@ if (isWin and not watcher.windowsMatches()) then
 
 		unzip()
 		os.execute("rd /s /q temp")
-		watcher.clearConsole()
+		zen.clearConsole()
 
-		print("Watcher was successfuly installed.")
+		print("zen was successfuly installed.")
 		return
 	else
 		return
