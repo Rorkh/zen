@@ -88,4 +88,16 @@ function zen.new(service, command)
 	end
 end
 
+function zen.start(service)
+	os.execute("nssm start ".. service)
+end
+
+function zen.stop(service)
+	os.execute("nssm stop " .. service)
+end
+
+function zen.restart(service)
+	os.execute("nssm restart " .. service)
+end
+
 return zen

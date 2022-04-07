@@ -59,11 +59,20 @@ end
 
 local command = arg[1]
 
-if arg[1] == "new" then
+local service = arg[2]
+if not service then return end
+
+if command == "new" then
 	if not arg[3] then
 		print("zen new <service-name> <command>")
 		return
 	end
 
-	zen.new(arg[2], arg[3])
+	zen.new(service, arg[3])
+elseif command == "stop" then
+	zen.stop(service)
+elseif command == "start" then
+	zen.start(service)
+elseif command == "restart" then
+	zen.restart(service)
 end
