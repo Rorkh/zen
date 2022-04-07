@@ -1,16 +1,16 @@
-local watcher = {}
+local zen = {}
 
 local separator = package.config:sub(1, 1)
 
-function watcher.isWindows()
+function zen.isWindows()
 	return separator == '\\'
 end
 
-function watcher.isUnix()
+function zen.isUnix()
 	return separator == '/'
 end
 
-function watcher.architecture()
+function zen.architecture()
 	if (0xfffffffff==0xffffffff) then 
 		return 32 
 	else 
@@ -18,8 +18,8 @@ function watcher.architecture()
 	end
 end
 
-function watcher.clearConsole()
-	os.execute(watcher.isWindows() and "cls" or "clear")
+function zen.clearConsole()
+	os.execute(zen.isWindows() and "cls" or "clear")
 end
 
 local function fileExists(name)
@@ -27,11 +27,11 @@ local function fileExists(name)
 	return f ~= nil and io.close(f)
 end
 
-function watcher.windowsMatches()
+function zen.windowsMatches()
 	return fileExists("C:\\Windows\\System32\\nssm.exe")
 end
 
-function watcher.capture(cmd)
+function zen.capture(cmd)
 	local f = assert(io.popen(cmd, 'r'))
 	local s = assert(f:read('*a'))
 	f:close()
@@ -43,8 +43,8 @@ function watcher.capture(cmd)
 	return s
 end
 
-function watcher.new()
+function zen.new()
 
 end
 
-return watcher
+return zen

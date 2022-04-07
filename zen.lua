@@ -60,5 +60,5 @@ end
 local command = arg[1]
 
 if arg[1] == "new" then
-	
+	print(arg[2])
 end
