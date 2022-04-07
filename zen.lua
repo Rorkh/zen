@@ -60,5 +60,10 @@ end
 local command = arg[1]
 
 if arg[1] == "new" then
-	print(arg[2])
+	if not arg[3] then
+		print("zen new <service-name> <command>")
+		return
+	end
+
+	zen.new(arg[2], arg[3])
 end

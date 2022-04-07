@@ -43,8 +43,49 @@ function zen.capture(cmd)
 	return s
 end
 
-function zen.new()
+function zen.matchExtension(ext)
+	if ext == "python" then
+		local _, _, code = os.execute("python --version")
 
+		if code == 1 then
+			print("python is not installed to run this service.")
+			return false
+		end
+
+		return "python"
+	elseif ext == "lua" then
+		local _, _, code = os.execute("lua -v")
+		local _, _, code_jit = os.execute("luajit -v")
+
+		if (code == 1) and (code_jit == 1) then
+			print("lua is not installed to run this service")
+			return false
+		end
+
+		return (code_jit == 0) and "luajit" or "lua"
+	end
+end
+
+function zen.createStarter(service, command)
+	os.execute("mkdir C:\\zen 2> NUL")
+
+	local f = io.open("C:\\zen\\" .. service .. "_start.bat", "w")
+		f:write("start " .. command)
+	f:close()
+end
+
+function zen.new(service, command)
+	local runner = zen.matchExtension(command:match("^.+%.(.+)$"))
+	if runner == false then return false end
+
+	if zen.isWindows() then
+		local cmd = runner .. " " .. command
+		zen.createStarter(service, cmd)
+		os.execute("nssm install " .. service .. " C:\\zen\\" .. service .. "_start.bat")
+		os.execute("nssm start " .. service)
+	else
+
+	end
 end
 
 return zen
